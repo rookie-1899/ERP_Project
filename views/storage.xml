@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+<!--    tree view of the patient model-->
+    <record id="storage_tree" model="ir.ui.view">
+        <field name="name">inventory.storage.tree</field>
+        <field name="model">inventory.storage</field>
+        <field name="arch" type="xml">
+            <tree string="Kho">
+                <field name="product_seq"/>
+                <field name="product_name"/>
+                <field name="group"/>
+                <field name="quantity"/>
+                <field name="unit"/>
+                <field name="total" sum="sum_of_total"/>
+            </tree>
+        </field>
+        </record>
+
+<!--    form view of the storage model-->
+    <record id="storage_form" model="ir.ui.view">
+        <field name="name">inventory.storage.form</field>
+        <field name="model">inventory.storage</field>
+        <field name="arch" type="xml">
+            <form string="Kho">
+                <sheet>
+
+<!--                    <div class="oe_button_box" name="button_box">-->
+<!--                        <button class="oe_stat_button" type="object" string="Tạo Phiếu Nhập Kho"-->
+<!--                                name="open_storage_imports" icon="fa-archive">-->
+<!--                        </button>-->
+<!--                    </div>-->
+
+                    <field name="image" widget="image" class="oe_avatar"/>
+                     <div class="oe_title">
+                        <h1>
+                            <field name="product_seq" readonly="1"/>
+                        </h1>
+                     </div>
+                    <group>
+                        <group>
+                            <field name="product_name"/>
+                            <field name="group"/>
+                        </group>
+                        <group>
+                            <field name="quantity"/>
+                            <field name="unit"/>
+                            <field name="price"/>
+                        </group>
+                        <group>
+                            <field name="total"/>
+                        </group>
+    <!--                        <group>-->
+    <!--                            <field name="min_qua"/>-->
+    <!--                        </group>-->
+                    </group>
+                    <group>
+                        <field name="notes"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread" option="{'post_refresh': 'recipients}"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!--    tree view of the patient model-->
+    <record id="inventory_storage_search" model="ir.ui.view">
+        <field name="name">inventory.storage.search</field>
+        <field name="model">inventory.storage</field>
+        <field name="arch" type="xml">
+            <search string="Tìm Kiếm NVL">
+                <field name="product_name" filter_domain="['|',('product_name', 'ilike', self),
+                ('product_seq', 'ilike', self)]"/>
+                <field name="product_seq"/>
+                <field name="group"/>
+            </search>
+        </field>
+        </record>
+
+    <!--action of the patient menu-->
+    <record id="action_storage" model="ir.actions.act_window">
+        <field name="name">Kho Hàng</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">inventory.storage</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,kanban,form</field>
+<!--        <field name="context">{"search_default_female":1}</field>-->
+        <field name="help" type="html">
+            <p class="0_view_nocontent_smiling_face">
+                Tạo Danh Sách NVL Trong Kho
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="inventory_root" name="Quản Lý Kho" sequence="0" web_icon=""/>
+    <!-- This Menu Item Must have a parent -->
+    <menuitem id="id_hy" name="Nghiệp Vụ Kho" parent="inventory_root" sequence="2"/>
+    <menuitem id="inventory_storage" name="Danh Mục NVL" parent="id_hy" action="action_storage"/>
+</odoo>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+<!--    tree view of the menu model-->
+    <record id="menu_tree" model="ir.ui.view">
+        <field name="name">salesman.menu.tree</field>
+        <field name="model">salesman.menu</field>
+        <field name="arch" type="xml">
+            <tree string="Menu">
+                <field name="menu_seq"/>
+                <field name="menu_name"/>
+                  <field name="menu_type"/>
+                <field name="menu_group"/>
+                <field name="menu_date"/>
+                <field name="notes"/>
+            </tree>
+        </field>
+        </record>
+
+    <!--    <record id="storage_kanban" model="ir.ui.view">-->
+    <!--        <field name="name">inventory.storage.kanban</field>-->
+    <!--        <field name="model">inventory.storage</field>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <kanban>-->
+    <!--                <field name="product_seq"/>-->
+    <!--                <field name="product_name"/>-->
+    <!--                <field name="group"/>-->
+    <!--                <field name="quantity"/>-->
+    <!--                <field name="unit"/>-->
+    <!--                <template>-->
+    <!--                    <t t-name="kanban-box">-->
+    <!--                        <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_inventory_storage_kanban">-->
+    <!--                            <t t-if="record.image.raw_value">-->
+    <!--                                <div class="o_kanban_image_fill_left d-none d-md-block"-->
+    <!--                                     t-attf-style="background-image: url('#{kanban_image('inventory.storage', 'image', record.id.raw_value)}')"/>-->
+    <!--                            </t>-->
+    <!--                            <t t-else="">-->
+    <!--                                <img class="o_kanban_image" alt="Avatar" t-att-src='_s + "/base/static/img/avatar.npg"'/>-->
+    <!--                            </t>-->
+    <!--                            <div class="oe_kanban_details">-->
+    <!--                                <strong class="o_kanban_record_title"><field name="display_name"/></strong>-->
+    <!--                                <div class="o_kanban_tags_section"/>-->
+    <!--                                    <ul>-->
+    <!--                                        <li>Tên: <field name="product_name"/></li>-->
+    <!--                                        <li>Nhóm: <field name="group"/></li>-->
+    <!--                                        <li>Số lượng/Khối lượng: <field name="quantity"/></li>-->
+    <!--                                        <li>Đơn vị: <field name="unit"/></li>-->
+    <!--                                    </ul>-->
+    <!--                            </div>-->
+    <!--                        </div>-->
+    <!--                     </t>-->
+    <!--                </template>-->
+    <!--            </kanban>-->
+    <!--        </field>-->
+    <!--    </record>-->
+
+<!--    form view of the patient model-->
+    <record id="menu_form" model="ir.ui.view">
+        <field name="name">salesman.menu.form</field>
+        <field name="model">salesman.menu</field>
+        <field name="arch" type="xml">
+            <form string="Menu">
+                <sheet>
+                     <div class="oe_title">
+                        <h1>
+                            <field name="menu_seq" readonly="1"/>
+                        </h1>
+                     </div>
+                    <group>
+                        <field name="menu_date"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="menu_name"/>
+                            <field name="menu_type"/>
+                            <field name="menu_group"/>
+                        </group>
+                        <group>
+                            <field name="menu_unit"/>
+                            <field name="menu_price"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Ghi Chú">
+                            <group>
+                                <field name="notes"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread" option="{'post_refresh': 'recipients}"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!--    tree view of the group model-->
+    <record id="salesman_menu_search" model="ir.ui.view">
+        <field name="name">salesman.menu.search</field>
+        <field name="model">salesman.menu</field>
+        <field name="arch" type="xml">
+            <search string="Tìm Kiếm NVL">
+                <field name="menu_name" filter_domain="['|',('menu_name', 'ilike', self),
+                ('menu_seq', 'ilike', self)]"/>
+                <field name="menu_group"/>
+                <field name="menu_type"/>
+            </search>
+        </field>
+        </record>
+
+    <!--action of the patient menu-->
+    <record id="action_menu" model="ir.actions.act_window">
+        <field name="name">Menu</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">salesman.menu</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,kanban,form</field>
+<!--        <field name="context">{"search_default_female":1}</field>-->
+        <field name="help" type="html">
+            <p class="0_view_nocontent_smiling_face">
+                Nhập Danh Mục Menu
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="inventory_root" name="Quản Lý Kho" sequence="0" web_icon=""/>
+    <menuitem id="id_menu" name="Quản lý bán hàng" parent="inventory_root" sequence="2"/>
+    <menuitem id="salesman_menu" name="Danh Mục Mặt Hàng" parent="id_menu" action="action_menu"/>
+</odoo>
